@@ -1,0 +1,7 @@
+#Python Standard
+.DS_Store
+*.pyc
+
+#Virtualenv
+venv/
+
