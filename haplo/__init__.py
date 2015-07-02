@@ -25,6 +25,8 @@ def init_db():
 if not os.path.isfile('haplo.db'):
     init_db()
 
+import haplo.views
+
 
 
 

@@ -1,0 +1,21 @@
+<!doctype html>
+<title> Story Time </title>
+<!-- link to CSS -->
+
+<div class=page>
+  <h1>MultiStory Time</h1>
+  <div>
+    <span>
+      <a href='/'>Back to Start</a>
+
+    {% if not session.logged_in %}
+    <a href="/"> Log In </a>
+    {% else %}
+    <a href="/"> Log Out </a>
+    {% endif %}
+    </span>
+  </div>
+  {% block body %}{% endblock %}
+</div>
+
+
