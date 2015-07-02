@@ -1,10 +1,11 @@
 
-{% macro storyline(id) %}
-  <form action='/' method=post class=add-entry>
-    {{id}}
+{% macro storyline(parent, id) %}
+  <form id={{id}} action="{{ url_for('add_storyline') }}" method=post class=add-entry>
     <dl>
+      <input type= hidden name=parent value={{parent}}>
+      <input type= hidden name=id value={{id}}>
       <dd><textarea name=message rows=5 cols=40></textarea></dd>
-      <dd><input type=submit value=SUBMIT></dd>
+      <dd><input type=submit  value=SUBMIT></dd>
     </dl>
   </form>
 {% endmacro %}
