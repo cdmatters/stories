@@ -1,20 +1,30 @@
 {% extends "layout.html" %}
+{% from 'macros.html' import storyline %}
+
 {% block body %}
   <!-- {% if session.logged_in %} -->
   <table>
     <tr>
       <td></td>
-      <td>please could you </td>
+      <td>
+        {{ storyline(1) }}
+      </td>
       <td></td>
     </tr>
     <tr>
-      <td>get some rest.</td>
+      <td>
+        {{ storyline(2) }}
+      </td>
       <td>BIG STORY HERE</td>
-      <td>stop the noise</td>
+      <td>
+        {{ storyline(3) }}
+      </td>
     </tr>    
     <tr>
       <td></td>
-      <td>i'm tryna</td>
+      <td>
+        {{ storyline(4) }}
+      </td>
       <td></td>
     </tr>
   </table>

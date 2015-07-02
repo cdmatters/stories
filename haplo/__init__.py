@@ -22,6 +22,9 @@ def init_db():
             cur.executescript(f.read())
         db.commit()
 
+
+
+
 if not os.path.isfile('haplo.db'):
     init_db()
 

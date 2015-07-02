@@ -1,0 +1,10 @@
+
+{% macro storyline(id) %}
+  <form action='/' method=post class=add-entry>
+    {{id}}
+    <dl>
+      <dd><textarea name=message rows=5 cols=40></textarea></dd>
+      <dd><input type=submit value=SUBMIT></dd>
+    </dl>
+  </form>
+{% endmacro %}
