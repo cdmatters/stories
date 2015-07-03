@@ -7,10 +7,10 @@
   <div>
     <span>
       <a href='/change/0'>Back to Start</a>
-      {% if not session.logged_in %}
-      <a href="/"> Log In </a>
+      {% if session.logged_in %}
+      <a href="/logout"> Log Out </a>
       {% else %}
-      <a href="/"> Log Out </a>
+      <a href="/login"> Log In </a>
       {% endif %}
     </span>
   </div>
