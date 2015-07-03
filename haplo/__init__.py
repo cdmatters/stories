@@ -8,10 +8,8 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
 
-
 def connect_db():
     return sqlite3.connect(app.config['DATABASE'])
-
 
 def init_db():
     """Initialize database with schema.sql"""
@@ -21,7 +19,6 @@ def init_db():
             cur = db.cursor()
             cur.executescript(f.read())
         db.commit()
-
 
 if not os.path.isfile('./haplo/haplo.db'):
     init_db()

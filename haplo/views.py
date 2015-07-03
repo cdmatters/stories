@@ -8,17 +8,21 @@ from haplo import app, connect_db
 def get_parent_story(parent_id, user_id):
     cur = g.db.execute('SELECT message FROM entries WHERE id = ? AND user_id=?', (parent_id,user_id))
     message = cur.fetchone() 
+
     if not message:
-        message=['DEFAULT']
+        cur = g.db.execute('SELECT message FROM entries WHERE parent = -1 AND user_id=?', (user_id,))    
+        message = cur.fetchone()
+        if not message:
+            message = ['DEFAULT']
     return  dict(id=parent_id, message=message[0])
 
 def get_children_stories(parent_id, user_id):
     cur = g.db.execute('SELECT id, message FROM entries WHERE parent=? AND user_id=? ORDER BY id ASC', (parent_id,user_id) )
     return [ {'id':row[0],'message':row[1]} for row in cur.fetchall() ]
 
-def create_new_children(parent_id, user_id):
+def create_new_children(parent_id, user_id, number=4):
     g.db.executemany('INSERT INTO entries (children, message, parent, user_id) VALUES (NULL,NULL,?,?)',
-        [(parent_id,user_id) for i in range(4)] )
+        [(parent_id,user_id) for i in range(number)] )
     g.db.commit()
 
 def update_parents_childlist(parent_id, user_id):
@@ -39,6 +43,15 @@ def return_userid_pass(user):
         return (None,None)
     else:
         return results
+
+def add_login_details(username, password):
+    g.db.execute('INSERT INTO  users (username, password) VALUES (?,?)', (username,password) )
+    g.db.commit()
+
+def add_first_words(user_id, message):
+    g.db.execute('INSERT INTO entries (children, message, parent, user_id) VALUES (NULL, ?, -1, ?)', 
+                   (message,user_id))
+    g.db.commit()
 
 ###############
 ##   VIEWS   ##
@@ -80,9 +93,11 @@ def add_child_message():
     message = request.form['message']
     user_id = session['user']['user_id']
 
-    create_new_children( new_id, user_id ) 
-    update_parents_childlist( new_id, user_id)
-    set_new_message(new_id, message, user_id )
+    if message:
+
+        create_new_children( new_id, user_id ) 
+        update_parents_childlist( new_id, user_id)
+        set_new_message(new_id, message, user_id )
     
     return redirect( url_for('index'))
 
@@ -109,6 +124,29 @@ def logout():
     session.pop('logged_in', None)
     session.pop('user', None)
     return redirect(url_for('index'))
+
+@app.route('/adduser', methods=['POST'])
+def add_user():
+    username = request.form['username']
+    password = request.form['password']
+    first_words = request.form['message']
+
+    if username and password and first_words:
+        add_login_details(username, password)
+
+        user_id, _  = return_userid_pass(request.form['username'])
+        add_first_words(user_id, first_words)
+
+        session['logged_in'] = True
+        session['user'] = {'user_id':user_id, 'parent_id':0}
+        return redirect(url_for('index'))
+    return render_template('login.html', error='No Empty Fields')
+
+
+
+
+
+
 
 
 

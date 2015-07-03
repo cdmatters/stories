@@ -11,4 +11,15 @@
       <dt><input type=submit value=Login> </dt>
     </dl>
   </form>
+  <form action="{{ url_for('add_user') }}" method=post>
+    <dl>
+      <dt>
+        Username: <input type=text name=username> 
+        Password: <input type=password name=password>
+        First Sentence: <textarea name=message rows=1 cols=35>
+        There once was a big bad wolf...</textarea>
+      </dt>
+      <dt><input type=submit value=AddUser> </dt>
+    </dl>
+  </form>
 {% endblock %}
