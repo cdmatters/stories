@@ -1,6 +1,9 @@
 from flask import render_template, g, request, redirect, url_for, session
 from haplo import app, connect_db
 
+######################
+## DATABASE METHODS ##
+######################
 
 def get_parent_story(parent_id, user_id):
     cur = g.db.execute('SELECT message FROM entries WHERE id = ? AND user_id=?', (parent_id,user_id))
@@ -37,17 +40,22 @@ def return_userid_pass(user):
     else:
         return results
 
-
-
+###############
+##   VIEWS   ##
+###############
 
 @app.before_request
 def before_request():
     g.db = connect_db()
 
+@app.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 @app.route('/')
 def index():
-
     if not session.get('logged_in'):
         return render_template('login.html')
 
@@ -62,7 +70,8 @@ def index():
 
 @app.route('/change/<parent_id>', methods=['GET'])
 def change_parent(parent_id):
-    session['user']['parent_id'] = parent_id 
+    if session.get('user') != None:
+        session['user']['parent_id'] = parent_id     
     return redirect( url_for('index'))
 
 @app.route('/add', methods=['POST'])
@@ -76,7 +85,6 @@ def add_child_message():
     set_new_message(new_id, message, user_id )
     
     return redirect( url_for('index'))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
