@@ -1,7 +1,7 @@
 
 {% macro storyline(parent, id, message) %}
   {% if message==None %}
-    <form action='{{ url_for("add_storyline") }}' method=post class=add-entry>
+    <form action='{{ url_for("add_child_message") }}' method=post class=add-entry>
       <dl>
         <input type= hidden name=parent value={{parent}}>      
         <input type= hidden name=id value={{id}}>
