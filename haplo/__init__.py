@@ -23,9 +23,7 @@ def init_db():
         db.commit()
 
 
-
-
-if not os.path.isfile('haplo.db'):
+if not os.path.isfile('./haplo/haplo.db'):
     init_db()
 
 import haplo.views
