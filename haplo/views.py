@@ -92,7 +92,7 @@ def index():
     kids_storylist =  get_children_stories( **session['user'] )
 
     if len (kids_storylist)==0:
-        create_new_children( **session['user'])
+        create_new_children( **session['user'] )
         kids_storylist =  get_children_stories( **session['user'] )
 
     return render_template('show_story.html', kids=kids_storylist, parent=node_story)
